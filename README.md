@@ -64,12 +64,57 @@ O-yuan（启原）是一个完全自托管的通用智能体 Agent，采用 **No
 - Python 3.x（GUI 自动化需要，可选）
 - pyautogui + Pillow（GUI 自动化需要，`pip install pyautogui Pillow`）
 
-### 快速安装
+### 方式一：NPM 全局安装（推荐）
+
+```bash
+# 全局安装
+npm install -g o-yuan
+
+# 启动服务
+oyuan start
+
+# 或指定端口
+oyuan start --port 8080
+
+# 查看状态
+oyuan status
+
+# 查看配置路径
+oyuan config
+```
+
+然后浏览器打开 `http://127.0.0.1:3088`
+
+### 方式二：一键部署脚本
+
+**Windows（PowerShell）：**
+```powershell
+# 克隆仓库后，在项目目录执行
+.\install.ps1
+
+# 可选参数
+.\install.ps1 -SkipBuild      # 跳过 C++ 编译（用 JS 降级）
+.\install.ps1 -StartNow       # 安装后立即启动
+.\install.ps1 -Port 8080      # 指定端口
+```
+
+**Linux / macOS：**
+```bash
+# 克隆仓库后，在项目目录执行
+chmod +x install.sh
+./install.sh
+
+# 可选参数
+./install.sh --skip-build      # 跳过 C++ 编译
+./install.sh --port=8080       # 指定端口
+```
+
+### 方式三：从源码安装
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourname/o-yuan.git
-cd o-yuan
+git clone https://github.com/ZnFr60/O-yuan.git
+cd O-yuan
 
 # 安装依赖（极少，仅 node-addon-api + ws）
 npm install

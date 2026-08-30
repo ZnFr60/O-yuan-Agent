@@ -1,8 +1,29 @@
 {
   "name": "o-yuan",
   "version": "3.0.0",
-  "description": "O-yuan (启原) v3.0 - 跨平台通用智能体 Agent，复现并完善了业界主流 Agent 的操作与功能，并加装了全新能力 (Node.js 上层调度 + C++ 原生扩展)",
+  "description": "O-yuan (启原) - 跨平台通用智能体 Agent，自研架构，28+内置工具，多模型合议，GUI自动化，持久化Shell，完全自托管",
   "main": "src/js/server.js",
+  "preferGlobal": true,
+  "bin": {
+    "oyuan": "bin/oyuan.js",
+    "o-yuan": "bin/oyuan.js"
+  },
+  "files": [
+    "src/",
+    "public/",
+    "bin/",
+    "config/config.default.json",
+    "docs/",
+    "binding.gyp",
+    "install.ps1",
+    "install.sh",
+    "install-conclave-service.bat",
+    "install-conclave-service.sh",
+    "start.js",
+    "start-conclave-hidden.vbs",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "start": "node src/js/server.js",
     "dev": "node src/js/server.js --dev",
@@ -17,13 +38,33 @@
   "engines": {
     "node": ">=16"
   },
+  "keywords": [
+    "agent",
+    "ai",
+    "llm",
+    "automation",
+    "openai",
+    "deepseek",
+    "gui-automation",
+    "self-hosted",
+    "multi-model",
+    "tool-calling",
+    "chatbot",
+    "assistant",
+    "developer-tools"
+  ],
+  "author": "ZnFr60",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZnFr60/O-yuan.git"
+  },
+  "homepage": "https://github.com/ZnFr60/O-yuan",
+  "bugs": {
+    "url": "https://github.com/ZnFr60/O-yuan/issues"
+  },
   "dependencies": {
     "node-addon-api": "^8.0.0",
     "ws": "^8.21.3"
-  },
-  "license": "MIT",
-  "bin": {
-    "oyuan": "bin/oyuan.js",
-    "Oyuan": "bin/oyuan.js"
   }
 }

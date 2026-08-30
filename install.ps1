@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # O-yuan (启原) 一键安装脚本
 # 适用：Windows / Linux / macOS
 # 用法（Windows PowerShell）:
@@ -86,7 +86,7 @@ try {
 
 # ---- 5. 初始化配置 ----
 Write-Host "[5/6] 初始化配置..."
-$cfgPath = Join-Path $ProjectDir "configconfig.json"
+$cfgPath = Join-Path $ProjectDir "config\config.json"
 if (-not (Test-Path $cfgPath)) {
     Write-Host "  ✅ 配置将首次启动时自动生成"
 } else {

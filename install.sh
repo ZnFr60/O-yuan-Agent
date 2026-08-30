@@ -69,7 +69,7 @@ fi
 echo "[6/6] 完成！"
 echo ""
 echo "  启动方式:  oyuan start（推荐）或 npm start"
-echo "  查看状态:  oyuan status
+echo "  查看状态:  oyuan status"
 echo "  查看配置:  oyuan config"
 echo "  访问地址:  http://127.0.0.1:$PORT"
 echo ""
