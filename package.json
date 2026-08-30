@@ -1,0 +1,29 @@
+{
+  "name": "o-yuan",
+  "version": "3.0.0",
+  "description": "O-yuan (启原) v3.0 - 跨平台通用智能体 Agent，复现并完善了业界主流 Agent 的操作与功能，并加装了全新能力 (Node.js 上层调度 + C++ 原生扩展)",
+  "main": "src/js/server.js",
+  "scripts": {
+    "start": "node src/js/server.js",
+    "dev": "node src/js/server.js --dev",
+    "build": "node-gyp rebuild",
+    "build:win": "node-gyp rebuild --arch=x64",
+    "build:arm64": "node-gyp rebuild --arch=arm64",
+    "build:clean": "node-gyp clean && node-gyp rebuild",
+    "test": "node tests/run-tests.js",
+    "oyuan": "node bin/oyuan.js"
+  },
+  "gypfile": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "node-addon-api": "^8.0.0",
+    "ws": "^8.21.3"
+  },
+  "license": "MIT",
+  "bin": {
+    "oyuan": "bin/oyuan.js",
+    "Oyuan": "bin/oyuan.js"
+  }
+}

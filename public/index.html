@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>O-yuan · 启原 Agent</title>
+  <link rel="stylesheet" href="/css/style.css?v=5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css" id="hljs-theme">
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◈</span>
+      <span class="title">O-yuan</span>
+      <span class="subtitle">启原 · 通用智能体</span>
+    </div>
+    <div class="topbar-actions">
+      <span id="native-badge" class="badge" title="原生加速状态">⛏ JS</span>
+      <span id="conn-badge" class="badge status-ok" title="连接状态">● 在线</span>
+      <button id="sidebar-toggle" class="icon-btn mobile-only" title="控制面板">☰</button>
+      <button id="theme-toggle" class="icon-btn" title="切换主题">🌙</button>
+      <button id="new-session-btn" class="icon-btn" title="新会话">＋</button>
+      <button id="settings-toggle" class="icon-btn" title="打开设置">⚙</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- 左侧历史会话面板 -->
+    <aside class="left-sidebar" id="left-sidebar">
+      <div class="ls-brand">
+        <span class="ls-logo">◈</span>
+        <span class="ls-title">O-yuan</span>
+      </div>
+      <button class="ls-new-btn" id="new-session-btn2" title="新会话">＋ 新会话</button>
+      <div class="ls-history" id="ls-history"></div>
+      <div class="ls-foot">
+        <button class="ls-settings-btn" id="ls-settings-btn">⚙ 设置</button>
+      </div>
+    </aside>
+    <!-- 聊天主区域 -->
+    <main class="chat-area" id="chat-area">
+      <div class="chat-bg" id="chat-bg"></div>
+      <!-- 工作流面板（流式展示） -->
+      <div class="workflow-panel hidden" id="workflow-panel">
+        <div class="wf-head">⚙ 工作流 <span id="wf-phase-name"></span></div>
+        <div class="wf-phases" id="wf-phases"></div>
+        <div class="wf-tools" id="wf-tools"></div>
+      </div>
+      <div class="messages" id="messages"></div>
+
+      <div class="input-area">
+        <div class="gui-mode-bar hidden" id="gui-mode-bar">
+          <span class="gui-mode-tag">🖥 GUI 模式</span>
+          <span class="gui-mode-hint" id="gui-mode-hint"></span>
+        </div>
+        <div class="composer">
+          <textarea id="input" rows="1" placeholder="输入消息，Enter 发送，Shift+Enter 换行…"></textarea>
+          <div class="composer-actions">
+            <select id="model-select" class="model-select" title="选择模型">
+              <option value="">自动</option>
+            </select>
+            <span class="mode-chip" id="mode-chip">加权投票</span>
+            <button id="send-btn" class="send-btn">发送</button>
+          </div>
+        </div>
+        <div class="hint">O-yuan · 启原 · 受三级权限管控 · 思考等级 <span id="think-chip">5</span>/10</div>
+      </div>
+    </main>
+
+
+  </div>
+</div>
+
+  <!-- 设置弹窗 -->
+  <div class="modal-overlay hidden" id="settings-modal">
+    <div class="modal">
+      <div class="modal-head"><h2>设置</h2><button class="icon-btn" id="modal-close">✕</button></div>
+      <div class="modal-body">
+        <div class="tab-bar">
+          <button class="tab active" data-tab="net">局域网</button>
+          <button class="tab" data-tab="api">API 管理</button>
+          <button class="tab" data-tab="agent">合议 & 角色</button>
+          <button class="tab" data-tab="gui">GUI & 知识库</button>
+          <button class="tab" data-tab="perm">权限</button>
+          <button class="tab" data-tab="stats">统计</button>
+          <button class="tab" data-tab="misc">缓存 & 风控</button>
+          <button class="tab" data-tab="features">功能开关</button>
+          <button class="tab" data-tab="theme">外观</button>
+        </div>
+
+        <div class="tab-panel" id="panel-net">
+          <label>监听主机</label>
+          <select id="cfg-host">
+            <option value="127.0.0.1">127.0.0.1（仅本机访问）</option>
+            <option value="0.0.0.0">0.0.0.0（本机 + 局域网同时访问）</option>
+          </select>
+          <p class="note">0.0.0.0 模式下：电脑用 <b>127.0.0.1:端口</b>、手机用 <b>局域网IP:端口</b> 可同时访问；本机免密，局域网需密码。</p>
+          <label>端口</label>
+          <input type="number" id="cfg-port" value="3088">
+          <div id="lan-security-box" class="security-box hidden">
+            <p><b>⚠ 安全提示：</b>开启局域网访问建议设置登录密码。</p>
+            <button id="set-password-btn" class="btn">设置登录密码</button>
+            <div class="risk-check hidden" id="risk-check">
+              <label><input type="checkbox" id="risk-ack"> 我已了解并接受无密码开放局域网访问的风险</label>
+              <button id="confirm-risk-btn" class="btn">确认并开放</button>
+            </div>
+          </div>
+          <button id="save-net-btn" class="btn primary">保存网络设置</button>
+        </div>
+
+        <div class="tab-panel hidden" id="panel-api">
+          <div id="models-list"></div>
+          <button id="add-model-btn" class="btn">+ 添加模型</button>
+          <button id="save-models-btn" class="btn primary">保存模型</button>
+        </div>
+
+        <!-- 合议 & 角色 -->
+        <div class="tab-panel hidden" id="panel-agent">
+          <label>合议模式</label>
+          <select id="mode-select">
+            <option value="fast">快速返回</option>
+            <option value="equal">均等投票</option>
+            <option value="weighted">加权投票</option>
+            <option value="deep">深度二次汇总</option>
+          </select>
+          <p class="perm-note" id="mode-note"></p>
+          <label>思考等级 <span id="think-val">5</span></label>
+          <input type="range" id="think-slider" min="0" max="10" value="5">
+          <label>思考控制</label>
+          <select id="think-mode">
+            <option value="native">native（原生参数）</option>
+            <option value="prompt_override">prompt_override（提示词）</option>
+          </select>
+          <hr>
+          <div class="toggle-row"><span>启用全局角色</span><label class="switch"><input type="checkbox" id="role-enable" checked><span></span></label></div>
+          <label>选择角色</label>
+          <select id="role-select"></select>
+          <div class="persona-card" id="persona-card">
+            <div class="persona-avatar" id="persona-avatar">◆</div>
+            <div class="persona-info">
+              <b id="persona-name">-</b>
+              <p id="persona-greeting"></p>
+              <p id="persona-tone" class="persona-tone"></p>
+            </div>
+          </div>
+          <div class="mini-btns">
+            <button class="mini-btn" id="role-refresh">刷新</button>
+            <button class="mini-btn" id="role-new">新建</button>
+            <button class="mini-btn" id="role-edit">编辑</button>
+            <button class="mini-btn danger" id="role-del">删除</button>
+          </div>
+          <div class="role-generator">
+            <label class="gen-label">✨ AI 角色生成器</label>
+            <textarea id="role-gen-input" rows="2" placeholder="用自然语言描述你想要的角色…"></textarea>
+            <button class="mini-btn primary" id="role-gen-btn">生成角色</button>
+          </div>
+        </div>
+
+        <!-- GUI & 知识库 -->
+        <div class="tab-panel hidden" id="panel-gui">
+          <label>知识库 & 搜索</label>
+          <div class="toggle-row"><span>RAG 知识库</span><label class="switch"><input type="checkbox" id="rag-enable"><span></span></label></div>
+          <div class="toggle-row"><span>联网搜索</span><label class="switch"><input type="checkbox" id="search-enable"><span></span></label></div>
+          <p class="kb-info" id="kb-info"></p>
+          <hr>
+          <label>GUI Agent</label>
+          <div class="toggle-row"><span>启用 GUI 能力</span><label class="switch"><input type="checkbox" id="gui-enable"><span></span></label></div>
+          <p class="kb-info" id="gui-agent-status"></p>
+          <div id="gui-mode-box" class="gui-mode-box">
+            <label>截图调度模式（互斥）</label>
+            <label class="radio-row"><input type="radio" name="gui-mode" value="interval" id="gui-mode-interval"> 定时截图
+              <input type="number" id="gui-interval" min="0.1" max="10" step="0.1" value="1.0"> 次/秒
+            </label>
+            <label class="radio-row"><input type="radio" name="gui-mode" value="auto" id="gui-mode-auto"> 自动化（模型自主截图）</label>
+            <p class="gui-note">⚠ 频率越高模型响应可能越慢，但任务执行越流畅。</p>
+          </div>
+          <textarea id="gui-agent-task" rows="2" placeholder="描述任务，例如：打开记事本并输入 hello…"></textarea>
+          <button class="mini-btn primary" id="gui-agent-run" style="margin-top:8px">▶ 运行 GUI Agent</button>
+          <div id="gui-agent-log" class="gui-agent-log"></div>
+        </div>
+
+        <!-- 统计 -->
+        <div class="tab-panel hidden" id="panel-stats">
+          <label>缓存统计</label>
+          <div class="stat-grid">
+            <div><span>命中率</span><b id="cache-rate">-</b></div>
+            <div><span>命中</span><b id="cache-hit">-</b></div>
+            <div><span>未命中</span><b id="cache-miss">-</b></div>
+            <div><span>容量</span><b id="cache-size">-</b></div>
+          </div>
+          <label style="margin-top:12px">系统状态</label>
+          <div class="stat-grid">
+            <div><span>风控今日</span><b id="risk-tokens">-</b></div>
+            <div><span>剩余</span><b id="risk-remain">-</b></div>
+            <div><span>队列运行</span><b id="task-running">-</b></div>
+            <div><span>黑名单</span><b id="blacklist-n">-</b></div>
+            <div><span>会话轮次</span><b id="session-turns">-</b></div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" id="panel-perm">
+          <label>全局权限档位</label>
+          <select id="cfg-perm">
+            <option value="none">无权限</option>
+            <option value="medium">中等权限</option>
+            <option value="full">完全访问</option>
+          </select>
+          <p class="note">完全访问必须设置 Web 登录密码；局域网开放且无密码时强制锁定为中等权限。</p>
+          <hr>
+          <label>当前权限（快捷切换）</label>
+          <select id="perm-select">
+            <option value="none">无权限（工作区 + 安全命令）</option>
+            <option value="medium">中等权限（全目录 + 高级Shell + 文件增删）</option>
+            <option value="full">完全访问（最高级）</option>
+          </select>
+          <p class="perm-note" id="perm-note"></p>
+        </div>
+
+        <div class="tab-panel hidden" id="panel-misc">
+          <label>缓存开关</label><input type="checkbox" id="cfg-cache">
+          <label>缓存容量</label><input type="number" id="cfg-cache-size" value="500">
+          <label>单日 Token 上限</label><input type="number" id="cfg-token-limit" value="1000000">
+          <button id="cache-clear-btn" class="btn">清空缓存</button>
+          <button id="cache-export-btn" class="btn">导出备份</button>
+          <button id="cache-import-btn" class="btn">导入恢复</button>
+          <input type="file" id="cache-import-file" accept="application/json" style="display:none">
+        </div>
+
+        <div class="tab-panel hidden" id="panel-features">
+          <p class="note">模块化功能开关：关闭的功能不再执行任何逻辑。核心功能（合议/缓存）始终可用。</p>
+          <div id="features-list"></div>
+        </div>
+
+        <div class="tab-panel hidden" id="panel-theme">
+          <label>主题</label>
+          <div class="theme-picker">
+            <button class="theme-btn" data-theme="light">☀ 明亮</button>
+            <button class="theme-btn" data-theme="dark">🌙 深色</button>
+          </div>
+          <label>侧边栏位置</label>
+          <div class="theme-picker">
+            <button class="theme-btn sb-pos" data-pos="left">◧ 左侧</button>
+            <button class="theme-btn sb-pos" data-pos="right">◨ 右侧</button>
+          </div>
+          <label>聊天背景</label>
+          <div class="bg-controls">
+            <button id="upload-bg-btn" class="btn">上传背景图片</button>
+            <input type="file" id="bg-file" accept="image/*" style="display:none">
+            <label>透明度 <span id="bg-opacity-val">30</span>%</label>
+            <input type="range" id="bg-opacity" min="0" max="100" value="30">
+            <label>模糊度 <span id="bg-blur-val">0</span>px</label>
+            <input type="range" id="bg-blur" min="0" max="40" value="0">
+            <button id="bg-reset-btn" class="btn">恢复默认背景</button>
+          </div>
+        </div>
+
+        <div class="modal-foot"><button class="btn primary" id="save-all-btn">保存全部设置</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 角色编辑器弹窗 -->
+  <div class="modal-overlay hidden" id="role-modal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><h2 id="role-modal-title">新建角色</h2><button class="icon-btn" id="role-modal-close">✕</button></div>
+      <div class="modal-body">
+        <label>角色名称</label><input type="text" id="rm-name">
+        <label>形象设定（人物/风格形象）</label><textarea id="rm-appearance" rows="2" placeholder="例如：一位温和可靠的夜间开发伙伴…"></textarea>
+        <label>语气</label><textarea id="rm-tone" rows="2" placeholder="说话语气、口吻…"></textarea>
+        <label>问候语</label><textarea id="rm-greeting" rows="1" placeholder="开场白…"></textarea>
+        <label>回答风格</label><textarea id="rm-style" rows="2" placeholder="回答风格…"></textarea>
+        <label>行为准则</label><textarea id="rm-rules" rows="2" placeholder="行为准则…"></textarea>
+        <label>禁止行为</label><textarea id="rm-forbidden" rows="2" placeholder="禁止行为…"></textarea>
+        <label>背景设定</label><textarea id="rm-background" rows="2" placeholder="背景设定…"></textarea>
+        <label>头像 URL（可选）</label><input type="text" id="rm-avatar" placeholder="https://… 或留空使用默认图标">
+      </div>
+      <div class="modal-foot">
+        <button class="btn primary" id="rm-save">保存角色</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js" crossorigin="anonymous"></script>
+  <script src="/js/app.js?v=5"></script>
+</body>
+</html>

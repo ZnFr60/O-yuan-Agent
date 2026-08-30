@@ -1,0 +1,116 @@
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 3088
+  },
+  "deliberation": {
+    "mode": "weighted",
+    "threshold": 0.5,
+    "faultBlacklistThreshold": 3,
+    "deepSummaryModel": "primary"
+  },
+  "models": [
+    {
+      "id": "primary",
+      "name": "DeepSeek",
+      "model": "deepseek-chat",
+      "baseUrl": "https://api.deepseek.com/v1",
+      "apiKey": "",
+      "enabled": true,
+      "weight": 1,
+      "think_control_mode": "native",
+      "timeoutMs": 60000,
+      "maxTokens": 2048,
+      "vision": false
+    },
+    {
+      "id": "backup",
+      "name": "OpenAI",
+      "model": "gpt-4o-mini",
+      "baseUrl": "https://api.openai.com/v1",
+      "apiKey": "",
+      "enabled": false,
+      "weight": 0.8,
+      "think_control_mode": "prompt_override",
+      "timeoutMs": 60000,
+      "maxTokens": 2048,
+      "vision": false
+    }
+  ],
+  "think": {
+    "level": 5,
+    "controlMode": "native"
+  },
+  "cache": {
+    "enabled": true,
+    "maxSize": 500,
+    "ttlSeconds": 3600,
+    "fuzzyThreshold": 0.82,
+    "whitelist": [],
+    "blacklist": []
+  },
+  "permissions": {
+    "global": "medium"
+  },
+  "rag": {
+    "enabled": true,
+    "maxRefs": 3,
+    "kbPath": "config/kb",
+    "similarityThreshold": 0.15,
+    "chunkSize": 1000,
+    "chunkOverlap": 100
+  },
+  "search": {
+    "enabled": false,
+    "provider": "duckduckgo",
+    "maxResults": 5
+  },
+  "risk": {
+    "dailyTokenLimit": 1000000,
+    "confirmCostThreshold": 0.02
+  },
+  "taskQueue": {
+    "concurrency": 2,
+    "timeoutMs": 120000
+  },
+  "logging": {
+    "level": "INFO",
+    "dir": "logs",
+    "maxSizeMB": 10,
+    "maxFiles": 5
+  },
+  "ui": {
+    "theme": "dark",
+    "customBg": ""
+  },
+  "plugins": {
+    "enabled": false,
+    "dir": "plugins"
+  },
+  "session": {
+    "maxTurns": 50,
+    "maxChars": 50000
+  },
+  "agentLoop": {
+    "maxSteps": 50,
+    "maxTokens": 4096
+  },
+  "subagent": {
+    "maxSteps": 30,
+    "maxTokens": 4096,
+    "defaultMode": "in-process"
+  },
+  "guiAgent": {
+    "enabled": false,
+    "mode": "none",
+    "interval": 1,
+    "maxSteps": 8
+  },
+  "mcpGui": {
+    "url": "http://127.0.0.1:3088/mcp",
+    "token": "",
+    "enabled": true,
+    "port": 3090,
+    "embedded": true
+  }
+}

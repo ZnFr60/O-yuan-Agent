@@ -1,0 +1,29 @@
+# 依赖
+node_modules/
+
+# 用户配置（含 API Key，切勿提交）
+config/config.json
+config/credentials.json
+config/.risk-state.json
+config/kb/
+config/roles/
+config/skills/
+
+# 日志与会话历史
+logs/
+*.log
+
+# 构建产物
+build/
+bin/
+dist/
+*.node
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地临时文件
+.oyuan-todo.json
+start-debug.bat
+start-mcp-gui.js
