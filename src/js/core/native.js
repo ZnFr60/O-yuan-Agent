@@ -9,6 +9,7 @@ let fallbackImpl = null;
 
 function loadNative() {
   const candidates = [
+    path.join(__dirname, '..', '..', '..', 'prebuilds', process.platform + '-' + process.arch, 'node.napi.node'),
     path.join(__dirname, '..', '..', '..', 'build', 'Release', 'conclave_native.node'),
     path.join(__dirname, '..', '..', '..', 'build', 'Debug', 'conclave_native.node')
   ];

@@ -15,9 +15,10 @@ logs/
 
 # 构建产物
 build/
-bin/
 dist/
 *.node
+!prebuilds/
+!prebuilds/**
 
 # 系统文件
 .DS_Store
