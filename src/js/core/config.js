@@ -1,4 +1,4 @@
-// config.js - 配置管理器
+﻿// config.js - 配置管理器
 // 读取 config/config.json（不存在则从 config/config.default.json 生成），
 // 所有路径使用 path 模块解析，兼容 Windows / Linux / macOS。
 'use strict';
@@ -13,8 +13,7 @@ const DEFAULTS = {
   server: {
     host: '127.0.0.1',
     port: 3088,
-    lanPasswordHash: '',
-    lanPasswordRequired: true
+    allowLan: false
   },
   deliberation: {
     mode: 'weighted',            // fast | equal | weighted | deep

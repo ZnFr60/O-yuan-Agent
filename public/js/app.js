@@ -841,20 +841,10 @@ async function saveModels() {
 }
 
 async function saveNet() {
+  const host = #cfg-host.value;
   const body = {
-    server: { host: $('#cfg-host').value, port: parseInt($('#cfg-port').value) || 3088 }
+    server: { host, port: parseInt(#cfg-port.value) || 3088, allowLan: host === '0.0.0.0' }
   };
-  const lanEnabled = body.server.host === '0.0.0.0';
-  if (lanEnabled) {
-    // 触发安全流程
-    $('#lan-security-box').classList.remove('hidden');
-    const st = await api('/api/auth/status', { _skipAuth: true });
-    if (!st.hasPassword) {
-      $('#risk-check').classList.remove('hidden');
-      $('#set-password-btn').style.display = '';
-    }
-    return;
-  }
   try {
     await api('/api/config', { method: 'POST', body });
     toast('网络设置已保存，重启生效');

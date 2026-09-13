@@ -1,4 +1,4 @@
-// session.js - 多轮会话上下文记忆 + 历史持久化
+﻿// session.js - 多轮会话上下文记忆 + 历史持久化
 // 每个会话维护最近 N 轮对话历史，注入系统提示；并持久化到磁盘支持历史会话列表。
 'use strict';
 const fs = require('fs');
@@ -35,7 +35,7 @@ class SessionStore {
       if (fs.existsSync(this.storeFile)) {
         const raw = JSON.parse(fs.readFileSync(this.storeFile, 'utf8'));
         for (const [id, s] of Object.entries(raw)) {
-          this.sessions.set(id, { history: s.history || [], createdAt: s.createdAt || Date.now(), updatedAt: s.updatedAt || Date.now(), title: s.title || '' });
+          this.sessions.set(id, { history: s.history || [], createdAt: s.createdAt || Date.now(), updatedAt: s.updatedAt || Date.now(), title: s.title || '', events: s.events || [] });
         }
         logger.info('会话历史已加载', { count: this.sessions.size });
       }
@@ -43,10 +43,16 @@ class SessionStore {
   }
 
   save() {
+    // 防抖：500ms 内多次调用只写一次磁盘
+    if (this._saveTimer) clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => this._flushSave(), 500);
+  }
+
+  _flushSave() {
     try {
       const out = {};
       for (const [id, s] of this.sessions) {
-        out[id] = { history: s.history, createdAt: s.createdAt, updatedAt: s.updatedAt, title: s.title || '' };
+        out[id] = { history: s.history, createdAt: s.createdAt, updatedAt: s.updatedAt, title: s.title || '', events: s.events || [] };
       }
       fs.writeFileSync(this.storeFile, JSON.stringify(out, null, 1), 'utf8');
     } catch (e) { logger.warn('会话历史保存失败', { error: e.message }); }

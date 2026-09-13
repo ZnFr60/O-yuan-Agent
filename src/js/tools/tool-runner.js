@@ -1,4 +1,4 @@
-// tool-runner.js - 工具调用链（Agent Loop 核心）
+﻿// tool-runner.js - 工具调用链（Agent Loop 核心）
 // 把 Conclave 能力（GUI / 搜索 / 知识库）暴露为可调工具，
 // 模型可请求调用，工具结果回填给模型继续推理。
 'use strict';
@@ -388,7 +388,7 @@ function toolDescription() {
   if (!features.isEnabled('toolCalling')) return '';
   const lines = [];
   lines.push('你是一个可以调用工具的智能体。当需要执行命令/读写文件/运行脚本/查询系统、获取屏幕、搜索、查知识库时，用以下工具：');
-  lines.push('请以 JSON 格式输出要调用的工具: {"tool":"工具名","args":{...}}');
+  lines.push('使用原生 function calling 调用工具，系统会自动将工具结果返回给你继续推理。');
   lines.push('');
   lines.push('【命令执行】当任务需要查看目录/文件内容、运行命令或脚本、查询系统状态时，用 run_command 工具，直接把要执行的命令放进 command 参数即可（如 {"tool":"run_command","args":{"command":"ls -la"}}）。命令输出会返回给你。');
   if (guiModeActive()) {
