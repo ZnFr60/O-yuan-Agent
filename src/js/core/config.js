@@ -1,4 +1,4 @@
-﻿// config.js - 配置管理器
+// config.js - 配置管理器
 // 读取 config/config.json（不存在则从 config/config.default.json 生成），
 // 所有路径使用 path 模块解析，兼容 Windows / Linux / macOS。
 'use strict';
@@ -100,7 +100,7 @@ class ConfigManager {
     }
     let user = {};
     if (fs.existsSync(CFG_PATH)) {
-      try { user = JSON.parse(fs.readFileSync(CFG_PATH, 'utf8')); }
+      try { let raw = fs.readFileSync(CFG_PATH, 'utf8'); raw = raw.replace(/^\uFEFF/, ''); user = JSON.parse(raw); }
       catch (e) { /* 保留默认 */ }
     } else {
       // 首次运行：从默认复制

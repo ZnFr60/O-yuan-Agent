@@ -1,6 +1,6 @@
-﻿{
+{
     "name":  "o-yuan",
-    "version":  "3.1.1",
+    "version":  "3.1.2",
     "description":  "O-yuan (启原) - 跨平台通用智能体 Agent，自研架构，28+内置工具，多模型合议，GUI自动化，持久化Shell，完全自托管",
     "main":  "src/js/server.js",
     "preferGlobal":  true,
