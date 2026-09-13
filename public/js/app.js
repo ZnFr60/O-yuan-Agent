@@ -1,4 +1,4 @@
-// app.js - Conclave 前端交互逻辑
+﻿// app.js - Conclave 前端交互逻辑
 'use strict';
 
 const $ = (sel) => document.querySelector(sel);
@@ -307,11 +307,30 @@ async function sendMessage() {
     const cmdCards = new Map(); // tool名 -> 卡片元素
     const toolOrder = [];       // 工具调用顺序（用于分组）
     let thinkRow = null;        // 当前 Think 折叠行
+    let todoBox = null;         // 计划表容器
 
     const flushEvent = (event, data) => {
       if (event === 'plan') {
         wfState.phases = data.phases || []; wfState.phaseIdx = 0;
         renderWfPhases();
+      } else if (event === 'todo') {
+        const steps = data.steps || [];
+        if (!steps.length) return;
+        if (!todoBox) {
+          todoBox = document.createElement('div');
+          todoBox.className = 'todo-box';
+          if (modelMsg) modelMsg.insertBefore(todoBox, modelMsg.firstChild);
+          else #messages.appendChild(todoBox);
+        }
+        todoBox.innerHTML = '<div class="todo-title">📋 执行计划</div>' +
+          steps.map((s, i) => {
+            const cls = s.status === 'done' ? 'done' : s.status === 'active' ? 'active' : '';
+            const icon = s.status === 'done' ? '✓' : s.status === 'active' ? '<span class="todo-spin">⟳</span>' : (i + 1);
+            return '<div class="todo-step " + cls + ""><span class="todo-idx">' + icon + '</span><span class="todo-text">' + escapeHtml(s.text) + '</span></div>';
+          }).join('');
+        #messages.scrollTop = #messages.scrollHeight;
+      } else if (event === 'heartbeat') {
+        // 心跳保持连接
       } else if (event === 'status') {
         wfPhase(data.phase, data.message);
       } else if (event === 'tool_call') {

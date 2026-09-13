@@ -439,3 +439,95 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 }
 .model-select:hover { border-color: var(--accent); }
 .model-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99,102,241,0.2); }
+
+/* ============ 计划表（Todo） ============ */
+.todo-box {
+  margin: 8px 0 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-secondary, rgba(128,128,128,0.08));
+  border: 1px solid var(--border, rgba(128,128,128,0.15));
+  font-size: 13px;
+  animation: fadeSlideIn 0.3s ease;
+}
+.todo-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+.todo-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.todo-step.active { opacity: 1; }
+.todo-step.done { opacity: 0.7; }
+.todo-idx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent, #4a9eff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.todo-step.done .todo-idx { background: var(--ok, #22c55e); }
+.todo-step.active .todo-idx { background: var(--accent, #4a9eff); box-shadow: 0 0 8px var(--accent, #4a9eff); }
+.todo-text { line-height: 1.4; }
+.todo-spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============ 流式光标 ============ */
+.stream-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent, #4a9eff);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============ 动画 ============ */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 消息进入动画 */
+.msg, .cmd-card, .todo-box {
+  animation: fadeSlideIn 0.3s ease;
+}
+
+/* 工具卡片完成动画 */
+.cmd-card[data-state="ok"] {
+  animation: fadeSlideIn 0.3s ease;
+}
+.cmd-card[data-state="error"] {
+  border-color: var(--err, #ef4444) !important;
+}
+
+/* 打字机效果 */
+.msg-body p {
+  animation: fadeIn 0.2s ease;
+}
