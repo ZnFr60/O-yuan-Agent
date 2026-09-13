@@ -28,3 +28,5 @@ Thumbs.db
 .oyuan-todo.json
 start-debug.bat
 start-mcp-gui.js
+
+.npmrc

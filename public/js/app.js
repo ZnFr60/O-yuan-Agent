@@ -141,7 +141,7 @@ function addMessage(content, type = 'model', meta = {}) {
   const body = document.createElement('div');
   body.innerHTML = renderCode(content);
   wrap.appendChild(body);
-  $('#messages').appendChild(wrap);
+  $$('#messages').appendChild(wrap);
   $('#messages').scrollTop = $('#messages').scrollHeight;
   // 高亮
   if (window.hljs && typeof hljs.highlightElement === 'function') { wrap.querySelectorAll('pre code').forEach(b => { try { hljs.highlightElement(b); } catch (e) {} }); }
@@ -151,7 +151,7 @@ function addSystem(content, type = 'system') {
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + type;
   wrap.innerHTML = escapeHtml(content);
-  $('#messages').appendChild(wrap);
+  $$('#messages').appendChild(wrap);
   $('#messages').scrollTop = $('#messages').scrollHeight;
 }
 
@@ -160,7 +160,7 @@ function addTyping() {
   wrap.className = 'msg model';
   wrap.id = 'typing';
   wrap.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  $('#messages').appendChild(wrap);
+  $$('#messages').appendChild(wrap);
   $('#messages').scrollTop = $('#messages').scrollHeight;
   return wrap;
 }
@@ -320,7 +320,7 @@ async function sendMessage() {
           todoBox = document.createElement('div');
           todoBox.className = 'todo-box';
           if (modelMsg) modelMsg.insertBefore(todoBox, modelMsg.firstChild);
-          else #messages.appendChild(todoBox);
+          else $('#messages').appendChild(todoBox);
         }
         todoBox.innerHTML = '<div class="todo-title">📋 执行计划</div>' +
           steps.map((s, i) => {
@@ -328,7 +328,7 @@ async function sendMessage() {
             const icon = s.status === 'done' ? '✓' : s.status === 'active' ? '<span class="todo-spin">⟳</span>' : (i + 1);
             return '<div class="todo-step " + cls + ""><span class="todo-idx">' + icon + '</span><span class="todo-text">' + escapeHtml(s.text) + '</span></div>';
           }).join('');
-        #messages.scrollTop = #messages.scrollHeight;
+        ('#messages').scrollTop = ('#messages').scrollHeight;
       } else if (event === 'heartbeat') {
         // 心跳保持连接
       } else if (event === 'status') {
@@ -341,7 +341,7 @@ async function sendMessage() {
           if (!cmdCards.has(name)) {
             const card = createCommandCard({ name, state: 'running', summary: data.detail || '运行中…' });
             if (modelMsg && toolOrder.length > 0) modelMsg.appendChild(card);
-            else $('#messages').appendChild(card);
+            else $$('#messages').appendChild(card);
             cmdCards.set(name, card);
             toolOrder.push(name);
           } else {
@@ -358,7 +358,7 @@ async function sendMessage() {
           let card = cmdCards.get(name);
           if (!card) {
             card = createCommandCard({ name, state: 'ok', summary: data.detail || '完成' });
-            $('#messages').appendChild(card);
+            $$('#messages').appendChild(card);
             cmdCards.set(name, card);
             toolOrder.push(name);
           } else {
@@ -395,7 +395,7 @@ async function sendMessage() {
         if (!thinkRow) {
           thinkRow = createThinkRow(data.text || '', true);
           if (modelMsg) modelMsg.appendChild(thinkRow);
-          else $('#messages').appendChild(thinkRow);
+          else $$('#messages').appendChild(thinkRow);
         } else {
           updateThinkRow(thinkRow, data.text || '', true);
         }
@@ -405,7 +405,7 @@ async function sendMessage() {
         if (!modelMsg) {
           modelMsg = document.createElement('div');
           modelMsg.className = 'msg model';
-          $('#messages').appendChild(modelMsg);
+          $$('#messages').appendChild(modelMsg);
         }
         // 正文 + 流式光标（简单可靠）
         let body = modelMsg.querySelector('.msg-body');
@@ -841,9 +841,9 @@ async function saveModels() {
 }
 
 async function saveNet() {
-  const host = #cfg-host.value;
+  const host = $('#cfg-host').value;
   const body = {
-    server: { host, port: parseInt(#cfg-port.value) || 3088, allowLan: host === '0.0.0.0' }
+    server: { host, port: parseInt($('#cfg-port').value) || 3088, allowLan: host === '0.0.0.0' }
   };
   try {
     await api('/api/config', { method: 'POST', body });
