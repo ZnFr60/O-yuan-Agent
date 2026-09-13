@@ -1,72 +1,72 @@
-{
-  "name": "o-yuan",
-  "version": "3.0.1",
-  "description": "O-yuan (启原) - 跨平台通用智能体 Agent，自研架构，28+内置工具，多模型合议，GUI自动化，持久化Shell，完全自托管",
-  "main": "src/js/server.js",
-  "preferGlobal": true,
-  "bin": {
-    "oyuan": "bin/oyuan.js",
-    "o-yuan": "bin/oyuan.js"
-  },
-  "files": [
-    "src/",
-    "public/",
-    "bin/",
-    "prebuilds/",
-    "config/config.default.json",
-    "docs/",
-    "binding.gyp",
-    "install.ps1",
-    "install.sh",
-    "install-conclave-service.bat",
-    "install-conclave-service.sh",
-    "start.js",
-    "start-conclave-hidden.vbs",
-    "LICENSE",
-    "README.md"
-  ],
-  "scripts": {
-    "install": "node -e \"console.log('[o-yuan] install: native build skipped, using prebuilt binary / JS fallback')\"",
-    "start": "node src/js/server.js",
-    "dev": "node src/js/server.js --dev",
-    "build": "node-gyp rebuild",
-    "build:win": "node-gyp rebuild --arch=x64",
-    "build:arm64": "node-gyp rebuild --arch=arm64",
-    "build:clean": "node-gyp clean && node-gyp rebuild",
-    "test": "node tests/run-tests.js",
-    "oyuan": "node bin/oyuan.js"
-  },
-  "engines": {
-    "node": ">=16"
-  },
-  "gypfile": false,
-  "keywords": [
-    "agent",
-    "ai",
-    "llm",
-    "automation",
-    "openai",
-    "deepseek",
-    "gui-automation",
-    "self-hosted",
-    "multi-model",
-    "tool-calling",
-    "chatbot",
-    "assistant",
-    "developer-tools"
-  ],
-  "author": "ZnFr60",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ZnFr60/O-yuan-Agent.git"
-  },
-  "homepage": "https://github.com/ZnFr60/O-yuan-Agent",
-  "bugs": {
-    "url": "https://github.com/ZnFr60/O-yuan-Agent/issues"
-  },
-  "dependencies": {
-    "node-addon-api": "^8.0.0",
-    "ws": "^8.21.3"
-  }
+﻿{
+    "name":  "o-yuan",
+    "version":  "3.1.0",
+    "description":  "O-yuan (启原) - 跨平台通用智能体 Agent，自研架构，28+内置工具，多模型合议，GUI自动化，持久化Shell，完全自托管",
+    "main":  "src/js/server.js",
+    "preferGlobal":  true,
+    "bin":  {
+                "oyuan":  "bin/oyuan.js",
+                "o-yuan":  "bin/oyuan.js"
+            },
+    "files":  [
+                  "src/",
+                  "public/",
+                  "bin/",
+                  "prebuilds/",
+                  "config/config.default.json",
+                  "docs/",
+                  "binding.gyp",
+                  "install.ps1",
+                  "install.sh",
+                  "install-conclave-service.bat",
+                  "install-conclave-service.sh",
+                  "start.js",
+                  "start-conclave-hidden.vbs",
+                  "LICENSE",
+                  "README.md"
+              ],
+    "scripts":  {
+                    "install":  "node -e \"console.log(\u0027[o-yuan] install: native build skipped, using prebuilt binary / JS fallback\u0027)\"",
+                    "start":  "node src/js/server.js",
+                    "dev":  "node src/js/server.js --dev",
+                    "build":  "node-gyp rebuild",
+                    "build:win":  "node-gyp rebuild --arch=x64",
+                    "build:arm64":  "node-gyp rebuild --arch=arm64",
+                    "build:clean":  "node-gyp clean \u0026\u0026 node-gyp rebuild",
+                    "test":  "node tests/run-tests.js",
+                    "oyuan":  "node bin/oyuan.js"
+                },
+    "engines":  {
+                    "node":  "\u003e=16"
+                },
+    "gypfile":  false,
+    "keywords":  [
+                     "agent",
+                     "ai",
+                     "llm",
+                     "automation",
+                     "openai",
+                     "deepseek",
+                     "gui-automation",
+                     "self-hosted",
+                     "multi-model",
+                     "tool-calling",
+                     "chatbot",
+                     "assistant",
+                     "developer-tools"
+                 ],
+    "author":  "ZnFr60",
+    "license":  "MIT",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/ZnFr60/O-yuan-Agent.git"
+                   },
+    "homepage":  "https://github.com/ZnFr60/O-yuan-Agent",
+    "bugs":  {
+                 "url":  "https://github.com/ZnFr60/O-yuan-Agent/issues"
+             },
+    "dependencies":  {
+                         "node-addon-api":  "^8.0.0",
+                         "ws":  "^8.21.3"
+                     }
 }
